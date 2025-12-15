@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        color-scheme: dark;
+    }
+
+    body {
+        @apply bg-transparent text-text-main overflow-hidden antialiased;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+}
+
+/* Custom minimal scrollbar */
+textarea::-webkit-scrollbar {
+    width: 6px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    @apply bg-zinc-800 rounded-full;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-700;
+}

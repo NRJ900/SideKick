@@ -48,7 +48,7 @@ sidekick/
 ## 🛠️ MVP Features (Phase 1 - 1 week build)
 
 ### 1. Core Shell
-- [ ] Global hotkey `Ctrl+Alt+Space` or user customizable hot key → frameless, always-on-top palette (400x500px, centered)
+- [ ] Global hotkey `Ctrl+Alt+Space` → frameless, always-on-top palette (400x500px, centered)
 - [ ] System tray icon with "Open Settings", "Quit"
 - [ ] Dark/light theme toggle
 - [ ] ESC closes palette
@@ -289,9 +289,8 @@ jobs:
 "Generate Desktop Sidekick EXACTLY per SPEC.md. Create ALL files with full working code. MVP only. Follow exact file structure, Rust commands, schemas, and prompts. No extras. Testable end-to-end."
 ```
 
-## Work Flow
-```
-A solid plan is to build Sidekick in stages: foundation → LLM core → agent capabilities → automation → backups/local LLMs, with a clear module layout from day one.[1][2][3][4][5]
+##
+A solid plan is to build Sidekick in stages: foundation → LLM core → agent capabilities → automation → backups/local LLMs, with a clear module layout from day one
 
 ***
 
@@ -485,12 +484,12 @@ A solid plan is to build Sidekick in stages: foundation → LLM core → agent c
 
 Following this plan gives you a fast, small, and extensible Windows “Sidekick” that can act on text, files, web, and desktop UIs, with local history, optional cloud backup, and local/private LLMs, all behind a safe, schema‑driven Rust agent core.
 
-```
 
-## Description
+
+## Desc
+
 Desktop Sidekick is a fast, memory-efficient Windows desktop agent built with Tauri, React/TypeScript, and Rust.
 
 It activates via global hotkey (Ctrl+Alt+Space) over any app, grabs selected text, and offers AI-powered text editing (beautify, summarize, expand, fix grammar) plus agentic commands like opening folders/files, web searches, and desktop UI automation (clicking buttons, navigating apps).
 
 Features persistent chat history in local SQLite, optional cloud backups (Google Drive/etc.), local LLM support (Ollama), auto-updates from GitHub, strict safety permissions, and structured logging—all in a sleek, always-on-top command palette with dark/light themes.
-
