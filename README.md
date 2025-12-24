@@ -47,21 +47,21 @@ sidekick/
 
 
 ## Work Flow
-```
-A solid plan is to build Sidekick in stages: foundation → LLM core → agent capabilities → automation → backups/local LLMs, with a clear module layout from day one.[1][2][3][4][5]
+
+A solid plan is to build Sidekick in stages: foundation → LLM core → agent capabilities → automation → backups/local LLMs, with a clear module layout from day one.
 
 ***
 
 ## 1. Project foundation
 
 - **Stack & repo setup**  
-  - Tauri v2 + React/TypeScript + Rust backend (monorepo).[6][1]
-  - Configure Tauri capabilities: file system, global shortcut, clipboard, opener, custom commands (Rust).[7][8][9][10]
+  - Tauri v2 + React/TypeScript + Rust backend (monorepo).
+  - Configure Tauri capabilities: file system, global shortcut, clipboard, opener, custom commands (Rust).
   - CI: GitHub Actions building Windows artifacts on tag push.
 
 - **Core window + hotkey**  
   - Implement the always‑running tray app with:
-    - Global hotkey (Ctrl+Alt+Space) via Tauri global‑shortcut plugin.[11][12][7]
+    - Global hotkey (Ctrl+Alt+Space) via Tauri global‑shortcut plugin.
     - A frameless, always‑on‑top window that acts as the command palette.  
   - Basic React UI: input box, selected‑text preview area, tabs for “Actions” and “Agent”.
 
@@ -78,14 +78,14 @@ A solid plan is to build Sidekick in stages: foundation → LLM core → agent c
 
 - **Clipboard and selection**  
   - Rust command `get_selected_text()`:
-    - Save clipboard → send Ctrl+C → small delay → read text → restore if needed, using system clipboard APIs.[8][13]
+    - Save clipboard → send Ctrl+C → small delay → read text → restore if needed, using system clipboard APIs.
   - Rust command `apply_text(text, mode)` for:
     - Copy to clipboard.  
     - Replace selection (set clipboard + Ctrl+V).  
 
 - **LLM abstraction layer**  
   - Rust `LlmProvider` trait with implementations:
-    - OpenAI, Claude, Gemini, DeepSeek (HTTP clients).[2][14]
+    - OpenAI, Claude, Gemini, DeepSeek (HTTP clients).
   - Expose commands:
     - `llm_text_action(operation, text, options)` for Beautify / Expand / Summarize / Fix grammar.  
     - `llm_agent_intent(input_text, context)` for structured agent plans (returns JSON).  
@@ -105,21 +105,21 @@ A solid plan is to build Sidekick in stages: foundation → LLM core → agent c
     - `OpenFolder { name }`  
     - `OpenFile { name }`  
     - `DesktopAutomation { app, steps: [Step] }`  
-  - LLM system prompt enforces strict JSON output; parse with `serde_json` and validate enums/constraints.[14][15][2]
+  - LLM system prompt enforces strict JSON output; parse with `serde_json` and validate enums/constraints.
 
 - **File system agent**  
   - Rust module:
-    - Search allowed roots (Documents/Desktop/Downloads/custom paths) for folders/files.[16][8]
+    - Search allowed roots (Documents/Desktop/Downloads/custom paths) for folders/files.
     - Return candidates with metadata; require UI confirmation when ambiguous.  
-    - Open via Tauri opener (Explorer / default app).[9][10][17][18]
+    - Open via Tauri opener (Explorer / default app).
 
 - **Web search agent**  
   - For `web_search` action:
-    - Build URL `https://<engine>/search?q=...` and call opener to launch default browser.[10][17][19][9]
+    - Build URL `https://<engine>/search?q=...` and call opener to launch default browser.
     - Optional quick confirm toast in UI.
 
 - **Permissions & safety**  
-  - Config flags: allow_open_files, allow_open_folders, allow_web, allow_automation, offline_only.[20][21][22][23]
+  - Config flags: allow_open_files, allow_open_folders, allow_web, allow_automation, offline_only.
   - Backend enforces these before executing a plan; UI shows why an action is blocked.
 
 ***
@@ -127,15 +127,15 @@ A solid plan is to build Sidekick in stages: foundation → LLM core → agent c
 ## 4. Desktop UI automation (Comet‑for‑Windows layer)
 
 - **UI Automation integration**  
-  - Add Rust module using Windows UI Automation via `uiautomation` crate or `windows` bindings.[4][24][25][26][27][28]
+  - Add Rust module using Windows UI Automation via `uiautomation` crate or `windows` bindings.
   - Capabilities:
-    - Enumerate top‑level windows, filter by title/process.[25][28]
-    - Find controls by name/control type/AutomationId.[26][27][29]
-    - Invoke controls (Invoke, Toggle, Value patterns).[28][29]
+    - Enumerate top‑level windows, filter by title/process.
+    - Find controls by name/control type/AutomationId.
+    - Invoke controls (Invoke, Toggle, Value patterns).
 
 - **Mouse/keyboard automation**  
   - Integrate `rustautogui` / `rsautogui`:
-    - Move mouse, click, scroll, type text as fallback.[5][30][31][32]
+    - Move mouse, click, scroll, type text as fallback.
 
 - **Automation plan format**  
   - Extend agent schema to support:
@@ -152,7 +152,7 @@ A solid plan is to build Sidekick in stages: foundation → LLM core → agent c
 ## 5. Chat history, local DB, and search
 
 - **SQLite integration**  
-  - Embed SQLite in Tauri via Rust or SQL plugin; DB file under `C:\ProgramData\Sidekick\db\sidekick.sqlite`.[3][33][34][35][36][37][38]
+  - Embed SQLite in Tauri via Rust or SQL plugin; DB file under `C:\ProgramData\Sidekick\db\sidekick.sqlite`.
   - Tables:
     - `conversations` (id, title, created_at, profile, tags).  
     - `messages` (id, conversation_id, role, content, metadata).  
@@ -172,16 +172,16 @@ A solid plan is to build Sidekick in stages: foundation → LLM core → agent c
 ## 6. Cloud backup & sync (optional but planned)
 
 - **Backup format**  
-  - Rust creates encrypted backup bundles (zip of SQLite + config minus secrets).[39][40][41][42]
+  - Rust creates encrypted backup bundles (zip of SQLite + config minus secrets).
   - Store in a temp folder before upload.
 
 - **Provider integration**  
-  - OAuth flow via Tauri (custom URI scheme) for Google Drive / other providers.[43][44]
+  - OAuth flow via Tauri (custom URI scheme) for Google Drive / other providers.
   - Use provider APIs to upload to app‑specific folder.  
 
 - **Scheduling & control**  
   - Settings:
-    - Provider choice, frequency, “backup now”, retention settings.[40][41][42][39]
+    - Provider choice, frequency, “backup now”, retention settings.
   - Logs for backup success/failure.
 
 ***
@@ -189,7 +189,7 @@ A solid plan is to build Sidekick in stages: foundation → LLM core → agent c
 ## 7. Local LLM support and routing
 
 - **Local provider (Ollama or similar)**  
-  - Add `LocalLlmProvider` that talks to `http://localhost:11434` (Ollama) or a configurable endpoint.[45][46][47][48]
+  - Add `LocalLlmProvider` that talks to `http://localhost:11434` (Ollama) or a configurable endpoint.
   - Settings:
     - Endpoint URL, available local models, test connection button.
 
@@ -208,22 +208,21 @@ A solid plan is to build Sidekick in stages: foundation → LLM core → agent c
 ## 8. Logging, diagnostics, and polish
 
 - **Logging**  
-  - Structured logs in `C:\ProgramData\Sidekick\logs`.[49][50][51]
+  - Structured logs in `C:\ProgramData\Sidekick\logs`.
   - Log:
     - LLM calls (metadata), agent plans, executed actions, errors, updates.  
   - In‑app log viewer with filters.
 
 - **Auto‑update integration**  
-  - Wire Tauri’s updater to GitHub Releases with a `latest.json` or update server.[52][53][54][55]
   - On startup and periodically, check for updates and prompt or auto‑install.
 
 - **UX & accessibility**  
-  - Keyboard‑first design, focus management, proper roles/labels.[56][57][58]
+  - Keyboard‑first design, focus management, proper roles/labels.
   - Profiles/modes, shortcuts for common agent actions, clear error toasts.
 
 ***
 
-## 9. Suggested development order (milestones)
+## 9. development order 
 
 1. **M1 – Shell & basics**  
    - Tauri app, tray, hotkey, palette, clipboard read/write, simple text‑to‑LLM (Beautify).  
@@ -241,7 +240,7 @@ A solid plan is to build Sidekick in stages: foundation → LLM core → agent c
    - Cloud backup, auto‑updates, logging UI, permissions refinements.
 
 
-```
+
 
 ## Description
 Desktop Sidekick is a fast, memory-efficient Windows desktop agent built with Tauri, React/TypeScript, and Rust.
