@@ -6,49 +6,10 @@
 **Stack**: Tauri v2 + React/TypeScript + Rust  
 **Target**: Windows 10/11, single installer (~20MB), <50MB RAM idle
 
-## 📁 Exact File Structure (Generate ALL these files)
-
-```
-sidekick/
-├── README.md                    # This spec
-├── src-tauri/
-│   ├── Cargo.toml
-│   ├── tauri.conf.json
-│   ├── src/
-│   │   ├── main.rs             # Tauri setup + command registration
-│   │   ├── lib.rs
-│   │   ├── config.rs           # Encrypted config manager
-│   │   ├── clipboard.rs        # get_selected_text(), apply_text()
-│   │   ├── llm.rs              # OpenAI provider + text actions
-│   │   ├── agent.rs            # AgentAction enum + FS search/execute
-│   │   └── types.rs            # Shared Rust/TS types (AgentPlan, etc.)
-│   └── build.rs                # Capabilities
-├── src/                        # React/TS frontend
-│   ├── index.html
-│   ├── vite.config.ts
-│   ├── main.tsx
-│   ├── App.tsx                 # Main palette window
-│   ├── components/
-│   │   ├── CommandPalette.tsx  # Input + action buttons
-│   │   ├── TextActions.tsx     # Beautify/Summarize/etc
-│   │   ├── AgentPanel.tsx      # Agent mode + confirmation
-│   │   └── Settings.tsx        # API key, theme, hotkey
-│   ├── hooks/
-│   │   ├── useAgent.ts         # Core agent state/logic
-│   │   └── useClipboard.ts
-│   ├── types.ts                # TS types matching Rust
-│   └── styles/
-│       ├── globals.css
-│       └── palette.module.css
-├── package.json
-├── tsconfig.json
-└── tailwind.config.js
-```
-
 
 ## Work Flow
 
-A solid plan is to build Sidekick in stages: foundation → LLM core → agent capabilities → automation → backups/local LLMs, with a clear module layout from day one.
+A solid plan is to build Sidekick in stages: foundation → LLM core → agent capabilities → automation → backups/local LLMs, with a clear module layout.
 
 ***
 
